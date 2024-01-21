@@ -1,102 +1,91 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:mobile_final/screens/Screen2.dart';
 // import 'package:http/http.dart' as http;
-
 
 class Screen1 extends StatelessWidget {
   final String name;
   final String fImg;
   final String bImg;
-  const Screen1({super.key, required this.name, required this.fImg, required this.bImg});
+  final int height;
+  final int weight;
+
+  const Screen1(
+      {super.key,
+      required this.name,
+      required this.fImg,
+      required this.bImg,
+      required this.height,
+      required this.weight});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Screen 1"),
+        title: const Text("Poké Info"),
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("name:[ $name ]"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //ポケモンの前側
+                Hero(
+                  tag: "fImg",
+                  child: Image.network(
+                    fImg,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                //ポケモンの後ろ側
+                Hero(
+                  tag: "bImg",
+                  child: Image.network(
+                    bImg,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+            //高さと重さの情報。元の値が0.1(m)(kg)なので直した
+            //あと、なんか計算で小数点のちっさいのが出てくるから、四捨五入の.toStoring~~~~つけてる。
+            Text("height:[ ${(height * 0.1).toStringAsFixed(1)} ](m)"),
+            Text("weight:[ ${(weight * 0.1).toStringAsFixed(1)} ](kg)"),
+            const SizedBox(
+              height: 100,
+            ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context, "String from Screen 2");
+                Navigator.pop(context);
               },
-              child: Text("to Screen 1"),
+              child: const Text("Next Pokémon"),
             ),
-            Text("$name"),
-            Image.network(fImg),
-            Image.network(bImg),
           ],
         ),
       ),
-    );;
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Screen2(
+              fImg: fImg,
+              bImg: bImg,
+            );
+          }));
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
-//
-//
-// class Screen1 extends StatefulWidget {
-//   // final String idFromS0;
-//   const Screen1({super.key});
-//
-//   @override
-//   State<Screen1> createState() => _Screen1State();
-// }
-//
-// class _Screen1State extends State<Screen1> {
-//   String result = "";
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Screen 1"),
-//       ),
-//       body: Center(
-//         child: Column(
-//           children: [
-//             ElevatedButton(
-//               onPressed: () async {
-//                 result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-//                   return Screen2();
-//                 }));
-//                 setState(() {
-//                   result;
-//                 });
-//               },
-//               child: Text("To Screen 2"),
-//             ),
-//             Text("var:[$result]"),
-//             Text("id:[]")
-//           ],
-//         )
-//       ),
-//     );
-//   }
-// }
 
-
-// class Screen1 extends StatelessWidget {
-//   const Screen1({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Screen 1"),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () async {
-//             final String result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-//               return Screen2();
-//             }));
-//             print("backed to Screen 1. var:[$result]");
-//           },
-//           child: Text("To Screen 2"),
-//         ),
-//       ),
-//     );
-//   }
-// }
+/*
+* やる気があったら、ポケモンのタイプの情報も取得して、それに応じて背景の色が変わるようにする
+* ２タイプあるポケモンは上下二色？
+* めんどくさいかも
+* */
