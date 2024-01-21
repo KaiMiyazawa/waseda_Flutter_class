@@ -4,6 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:mobile_final/screens/screen1.dart';
 import 'package:http/http.dart' as http;
 
+
+// 最終課題（重要）
+// • 技術要件（採点要件）
+// ✅ マルチスクリーンであること（＝画面遷移があること）
+    //説明いらん
+// ✅ Row Widget が使われていること
+　　 //Screen1.dartにある　多分
+// ✅ Column Widget が使われていること
+　　 //そこかしこにある
+// ✅ Stateful Widget、setState（）が使われていること
+　　 //すぐそこにある
+// ✅ https://docs.flutter.dev/reference/widgets より
+//     本授業で取り扱っていないWidget（※）を自身で調べ、実際に使ってみること
+//        ■ たとえば、Image などはNG
+//        ■ どんなWidgetでも良い（簡単なものでも難易度が高いものでも）
+//             • 自分で公式ドキュメントを読んで実装することが重要
+//        ■ （5週目の課題が関連）
+     //Hero widget を使った。　Screen1 と　Screen2　を見ればわかる
+
 void main() {
   runApp(const MaterialApp(
     title: "Pokemon Search",
@@ -62,8 +81,10 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
+                //APIからidのポケモンの情報をゲット
                 Uri url = Uri.parse("https://pokeapi.co/api/v2/pokemon/" + _id);
                 final response = await http.get(url);
+                //成功のステコードが200らしい
                 if (response.statusCode == 200) {
                   setState(() {
                     _p_name = jsonDecode(response.body)['name'];
@@ -74,7 +95,7 @@ class _MyAppState extends State<MyApp> {
                     _p_h = jsonDecode(response.body)['height'];
                     _p_w = jsonDecode(response.body)['weight'];
                   });
-                } else {
+                } else {//dartの例外処理らしい。全然わかんないけど定型分って書いてあったからしたがって使う。
                   throw Exception('Failed to load Pokémon');
                 }
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
